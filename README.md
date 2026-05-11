@@ -214,6 +214,10 @@ The dashboard now ships with a **sidebar selector** that lets you switch between
 
 ---
 
+presentation : 
+https://docs.google.com/presentation/d/1SdzMh2o909TtD4O2bNzeKGtbBsJb4qfL31saDvg1T8Q/edit?usp=sharing
+
+
 ## License
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
