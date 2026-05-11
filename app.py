@@ -14,7 +14,6 @@ MATRIX_PATH = BASE_DIR / "transaction_matrix.csv"
 
 st.set_page_config(
     page_title="Market Basket Analytics",
-    page_icon=None,
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -29,45 +28,46 @@ st.markdown(
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
     html, body, [class*="css"] {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
 
-    /* Sidebar styling */
-    section[data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-        border-right: 1px solid #334155;
+    /* Sidebar */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #0b1220 0%, #152033 100%);
+        border-right: 1px solid #1e293b;
     }
-    section[data-testid="stSidebar"] .stRadio label {
-        color: #e2e8f0;
+    [data-testid="stSidebar"] .stRadio label {
+        color: #cbd5e1;
         font-size: 13px;
         font-weight: 500;
+        padding: 6px 0;
     }
-    section[data-testid="stSidebar"] .stRadio > div {
+    [data-testid="stSidebar"] .stRadio > div {
         background: rgba(255,255,255,0.03);
         border-radius: 10px;
         padding: 8px;
         border: 1px solid rgba(255,255,255,0.06);
     }
 
-    /* Main content background */
+    /* Main layout */
     .main .block-container {
-        padding-top: 2rem;
+        padding-top: 1.5rem;
         padding-bottom: 3rem;
         max-width: 1400px;
     }
 
-    /* Hero header area */
+    /* Hero */
     .hero {
-        background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+        background: linear-gradient(135deg, #0b1220 0%, #0f2d4a 50%, #0b1220 100%);
         border-radius: 16px;
-        padding: 32px 40px;
-        margin-bottom: 32px;
-        border: 1px solid rgba(255,255,255,0.08);
-        box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        padding: 36px 40px;
+        margin-bottom: 28px;
+        border: 1px solid rgba(255,255,255,0.06);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.3);
     }
     .hero h1 {
         color: #f8fafc;
-        font-size: 32px;
+        font-size: 34px;
         font-weight: 800;
         margin: 0 0 8px 0;
         letter-spacing: -0.5px;
@@ -79,7 +79,7 @@ st.markdown(
         font-weight: 400;
     }
 
-    /* KPI Cards row */
+    /* KPI Cards */
     .kpi-container {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -87,11 +87,11 @@ st.markdown(
         margin-bottom: 32px;
     }
     .kpi-card {
-        background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+        background: #ffffff;
         border: 1px solid #e2e8f0;
         border-radius: 14px;
         padding: 24px;
-        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.04), 0 2px 4px -2px rgba(0,0,0,0.04);
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.04);
         transition: all 0.2s ease;
     }
     .kpi-card:hover {
@@ -113,45 +113,10 @@ st.markdown(
         letter-spacing: 0.8px;
         font-weight: 600;
     }
-    .kpi-change {
-        font-size: 12px;
-        color: #059669;
-        font-weight: 500;
-        margin-top: 8px;
-    }
 
-    /* Section cards */
-    .section-card {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 14px;
-        padding: 24px;
-        margin-bottom: 20px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-    }
-    .section-title {
-        font-size: 18px;
-        font-weight: 700;
-        color: #0f172a;
-        margin-bottom: 16px;
-        padding-bottom: 12px;
-        border-bottom: 2px solid #e2e8f0;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    .section-title::before {
-        content: '';
-        display: inline-block;
-        width: 4px;
-        height: 20px;
-        background: linear-gradient(180deg, #0ea5e9 0%, #0284c7 100%);
-        border-radius: 2px;
-    }
-
-    /* Info / tip boxes */
+    /* Tip boxes */
     .tip-box {
-        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        background: #eff6ff;
         border-left: 4px solid #3b82f6;
         padding: 16px 20px;
         border-radius: 0 10px 10px 0;
@@ -160,11 +125,8 @@ st.markdown(
         color: #1e40af;
         line-height: 1.6;
     }
-    .tip-box strong {
-        color: #1e3a5f;
-    }
     .success-box {
-        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        background: #f0fdf4;
         border-left: 4px solid #22c55e;
         padding: 16px 20px;
         border-radius: 0 10px 10px 0;
@@ -174,7 +136,7 @@ st.markdown(
         line-height: 1.6;
     }
     .warning-box {
-        background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+        background: #fffbeb;
         border-left: 4px solid #f59e0b;
         padding: 16px 20px;
         border-radius: 0 10px 10px 0;
@@ -186,7 +148,7 @@ st.markdown(
 
     /* Buttons */
     .stButton > button {
-        background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+        background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
         color: white;
         border: none;
         border-radius: 10px;
@@ -194,14 +156,14 @@ st.markdown(
         font-weight: 600;
         font-size: 13px;
         transition: all 0.2s;
-        box-shadow: 0 4px 6px -1px rgba(14,165,233,0.2);
+        box-shadow: 0 4px 6px -1px rgba(2,132,199,0.2);
     }
     .stButton > button:hover {
         transform: translateY(-1px);
-        box-shadow: 0 6px 12px -2px rgba(14,165,233,0.3);
+        box-shadow: 0 6px 12px -2px rgba(2,132,199,0.3);
     }
 
-    /* Tables */
+    /* Dataframe rounding */
     .stDataFrame {
         border-radius: 10px;
         overflow: hidden;
@@ -214,6 +176,7 @@ st.markdown(
         background: #f1f5f9;
         padding: 6px;
         border-radius: 12px;
+        margin-bottom: 24px;
     }
     .stTabs [data-baseweb="tab"] {
         padding: 10px 20px;
@@ -233,36 +196,12 @@ st.markdown(
         color: #0f172a !important;
     }
 
-    /* Sliders */
-    .stSlider label {
-        font-size: 12px;
-        font-weight: 600;
-        color: #475569;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    /* Multiselect */
-    .stMultiSelect label {
-        font-size: 12px;
-        font-weight: 600;
-        color: #475569;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    /* Sidebar header */
-    .sidebar-title {
-        color: #f8fafc;
-        font-size: 18px;
-        font-weight: 700;
-        margin-bottom: 8px;
-    }
-    .sidebar-desc {
-        color: #94a3b8;
-        font-size: 12px;
-        line-height: 1.5;
-        margin-bottom: 20px;
+    /* Section divider */
+    .section-divider {
+        border: none;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+        margin: 32px 0;
     }
     </style>
     """,
@@ -310,24 +249,16 @@ def build_transaction_items(data: pd.DataFrame) -> pd.Series:
 # ---------------------------------------------------------------------------
 #  Helpers
 # ---------------------------------------------------------------------------
-def kpi_card(label: str, value: str, change: str = "") -> None:
-    change_html = f'<div class="kpi-change">{change}</div>' if change else ""
+def kpi_card(label: str, value: str) -> None:
     st.markdown(
         f"""
         <div class="kpi-card">
             <div class="kpi-value">{value}</div>
             <div class="kpi-label">{label}</div>
-            {change_html}
         </div>
         """,
         unsafe_allow_html=True,
     )
-
-
-def section_card(title: str, content_func) -> None:
-    st.markdown(f'<div class="section-card"><div class="section-title">{title}</div>', unsafe_allow_html=True)
-    content_func()
-    st.markdown('</div>', unsafe_allow_html=True)
 
 
 def tip_box(content: str) -> None:
@@ -434,15 +365,15 @@ def to_excel(df: pd.DataFrame, sheet_name: str = "Sheet1") -> bytes:
 #  Sidebar
 # ---------------------------------------------------------------------------
 with st.sidebar:
-    st.markdown('<div class="sidebar-title">Platform Selector</div>', unsafe_allow_html=True)
-    st.markdown('<div class="sidebar-desc">Choose the analytics experience you want to explore.</div>', unsafe_allow_html=True)
+    st.markdown('<p style="color:#f8fafc; font-size:18px; font-weight:700; margin-bottom:4px;">Platform Selector</p>', unsafe_allow_html=True)
+    st.markdown('<p style="color:#94a3b8; font-size:12px; line-height:1.5; margin-bottom:20px;">Choose the analytics experience you want to explore.</p>', unsafe_allow_html=True)
 
     dashboard_mode = st.radio(
         label="",
         options=[
             "Market Basket Engine",
             "Power BI Preview",
-            "Snowflake Cloud",
+            "Snowflake Setup Guide",
         ],
         index=0,
         label_visibility="collapsed",
@@ -450,11 +381,11 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown(
-        '<div class="sidebar-desc">'
-        '<strong>Market Basket Engine</strong> &mdash; Interactive rules and recommendations.<br><br>'
-        '<strong>Power BI Preview</strong> &mdash; Live dashboard preview and export tools.<br><br>'
-        '<strong>Snowflake Cloud</strong> &mdash; Cloud warehouse setup guide.'
-        '</div>',
+        '<p style="color:#94a3b8; font-size:12px; line-height:1.6;">'
+        '<strong style="color:#e2e8f0;">Market Basket Engine</strong> &mdash; Interactive rules and recommendations.<br><br>'
+        '<strong style="color:#e2e8f0;">Power BI Preview</strong> &mdash; Live charts and export tools.<br><br>'
+        '<strong style="color:#e2e8f0;">Snowflake Setup</strong> &mdash; Cloud database connection guide.'
+        '</p>',
         unsafe_allow_html=True,
     )
 
@@ -495,169 +426,161 @@ if dashboard_mode == "Market Basket Engine":
         with c4:
             kpi_card("Association Rules", f"{len(rules):,}")
 
-        def top_products_content():
-            top_n = st.slider("Number of products to display", min_value=5, max_value=30, value=15, key="top_products")
-            top_items = raw_data["itemDescription"].value_counts().head(top_n)
-            st.bar_chart(top_items, use_container_width=True)
-
-        section_card("Top Products", top_products_content)
+        st.markdown("---")
+        st.subheader("Top Products")
+        top_n = st.slider("Number of products to display", min_value=5, max_value=30, value=15, key="top_products")
+        top_items = raw_data["itemDescription"].value_counts().head(top_n)
+        st.bar_chart(top_items, use_container_width=True)
 
         col_a, col_b = st.columns(2)
         with col_a:
-            def monthly_content():
-                monthly = raw_data.groupby("month").size()
-                st.line_chart(monthly, use_container_width=True)
-            section_card("Monthly Purchase Volume", monthly_content)
+            st.subheader("Monthly Purchase Volume")
+            monthly = raw_data.groupby("month").size()
+            st.line_chart(monthly, use_container_width=True)
         with col_b:
-            def size_content():
-                size_counts = transaction_items.apply(len).value_counts().sort_index()
-                st.bar_chart(size_counts, use_container_width=True)
-            section_card("Transaction Size Distribution", size_content)
+            st.subheader("Transaction Size Distribution")
+            size_counts = transaction_items.apply(len).value_counts().sort_index()
+            st.bar_chart(size_counts, use_container_width=True)
 
     with tab_rules:
-        def rules_filter_content():
-            c1, c2 = st.columns(2)
-            with c1:
-                min_lift = st.slider("Minimum Lift", 1.0, float(max(1.0, rules["Lift"].max())), 1.0, 0.01)
-            with c2:
-                min_confidence = st.slider("Minimum Confidence", 0.0, float(max(0.01, rules["Confidence"].max())), 0.0, 0.01)
+        st.subheader("Association Rules Explorer")
 
-            filtered_rules = rules[(rules["Lift"] >= min_lift) & (rules["Confidence"] >= min_confidence)].copy()
+        c1, c2 = st.columns(2)
+        with c1:
+            min_lift = st.slider("Minimum Lift", 1.0, float(max(1.0, rules["Lift"].max())), 1.0, 0.01)
+        with c2:
+            min_confidence = st.slider("Minimum Confidence", 0.0, float(max(0.01, rules["Confidence"].max())), 0.0, 0.01)
 
-            st.dataframe(
-                filtered_rules[
-                    ["Rank", "Rule", "Support", "Confidence", "Lift", "Leverage", "Conviction", "Jaccard"]
-                ].style.format(
-                    {
-                        "Support": "{:.4f}",
-                        "Confidence": "{:.4f}",
-                        "Lift": "{:.4f}",
-                        "Leverage": "{:.5f}",
-                        "Conviction": "{:.4f}",
-                        "Jaccard": "{:.4f}",
-                    }
-                ),
-                use_container_width=True,
-                hide_index=True,
-                height=400,
-            )
+        filtered_rules = rules[(rules["Lift"] >= min_lift) & (rules["Confidence"] >= min_confidence)].copy()
 
-            col_a, col_b = st.columns(2)
-            with col_a:
-                st.subheader("Rules Ranked by Lift")
-                lift_chart = filtered_rules.set_index("Rule")["Lift"] if not filtered_rules.empty else pd.Series(dtype=float)
-                st.bar_chart(lift_chart, use_container_width=True)
-            with col_b:
-                st.subheader("Metric Summary")
-                if filtered_rules.empty:
-                    st.info("No rules match the selected filters.")
-                else:
-                    st.dataframe(
-                        filtered_rules[["Support", "Confidence", "Lift", "Leverage", "Conviction", "Jaccard"]]
-                        .describe()
-                        .round(4),
-                        use_container_width=True,
-                    )
+        st.dataframe(
+            filtered_rules[
+                ["Rank", "Rule", "Support", "Confidence", "Lift", "Leverage", "Conviction", "Jaccard"]
+            ].style.format(
+                {
+                    "Support": "{:.4f}",
+                    "Confidence": "{:.4f}",
+                    "Lift": "{:.4f}",
+                    "Leverage": "{:.5f}",
+                    "Conviction": "{:.4f}",
+                    "Jaccard": "{:.4f}",
+                }
+            ),
+            use_container_width=True,
+            hide_index=True,
+            height=400,
+        )
 
-            tip_box(
-                "<strong>How to read these rules:</strong> Lift above 1 means the antecedent and consequent "
-                "appear together more often than expected under independence. The current dataset has small, "
-                "sparse baskets, so confidence values are generally low."
-            )
+        col_a, col_b = st.columns(2)
+        with col_a:
+            st.subheader("Rules Ranked by Lift")
+            lift_chart = filtered_rules.set_index("Rule")["Lift"] if not filtered_rules.empty else pd.Series(dtype=float)
+            st.bar_chart(lift_chart, use_container_width=True)
+        with col_b:
+            st.subheader("Metric Summary")
+            if filtered_rules.empty:
+                st.info("No rules match the selected filters.")
+            else:
+                st.dataframe(
+                    filtered_rules[["Support", "Confidence", "Lift", "Leverage", "Conviction", "Jaccard"]]
+                    .describe()
+                    .round(4),
+                    use_container_width=True,
+                )
 
-        section_card("Association Rules Explorer", rules_filter_content)
+        tip_box(
+            "<strong>How to read these rules:</strong> Lift above 1 means the antecedent and consequent "
+            "appear together more often than expected under independence. The current dataset has small, "
+            "sparse baskets, so confidence values are generally low."
+        )
 
     with tab_recommender:
-        def recommender_content():
-            c1, c2 = st.columns([3, 1])
-            with c1:
-                selected_items = st.multiselect(
-                    "Select products currently in the basket",
-                    options=sorted(matrix_items),
-                    default=["sausage"] if "sausage" in matrix_items else [],
-                    placeholder="Choose products...",
-                )
-            with c2:
-                top_n_recs = st.slider("Max recommendations", min_value=1, max_value=10, value=5)
+        st.subheader("Product Recommendation Engine")
 
-            if selected_items:
-                recommendations = recommend_from_rules(selected_items, rules, top_n_recs)
-                if recommendations.empty:
-                    warning_box("No rule-based recommendation found. Showing co-occurrence fallback.")
-                    fallback = fallback_cooccurrence(selected_items, transaction_items, top_n_recs)
-                    if fallback.empty:
-                        st.info("No co-occurring products found for this basket.")
-                    else:
-                        st.dataframe(
-                            fallback.style.format(
-                                {"Basket match rate": "{:.2%}", "Dataset support": "{:.2%}"}
-                            ),
-                            use_container_width=True,
-                            hide_index=True,
-                        )
+        c1, c2 = st.columns([3, 1])
+        with c1:
+            selected_items = st.multiselect(
+                "Select products currently in the basket",
+                options=sorted(matrix_items),
+                default=["sausage"] if "sausage" in matrix_items else [],
+                placeholder="Choose products...",
+            )
+        with c2:
+            top_n_recs = st.slider("Max recommendations", min_value=1, max_value=10, value=5)
+
+        if selected_items:
+            recommendations = recommend_from_rules(selected_items, rules, top_n_recs)
+            if recommendations.empty:
+                warning_box("No rule-based recommendation found. Showing co-occurrence fallback.")
+                fallback = fallback_cooccurrence(selected_items, transaction_items, top_n_recs)
+                if fallback.empty:
+                    st.info("No co-occurring products found for this basket.")
                 else:
-                    success_box(f"Found <strong>{len(recommendations)}</strong> recommendation(s) based on your basket.")
                     st.dataframe(
-                        recommendations.style.format(
-                            {"Support": "{:.4f}", "Confidence": "{:.4f}", "Lift": "{:.4f}"}
+                        fallback.style.format(
+                            {"Basket match rate": "{:.2%}", "Dataset support": "{:.2%}"}
                         ),
                         use_container_width=True,
                         hide_index=True,
                     )
             else:
-                st.info("Select at least one product to generate recommendations.")
+                success_box(f"Found <strong>{len(recommendations)}</strong> recommendation(s) based on your basket.")
+                st.dataframe(
+                    recommendations.style.format(
+                        {"Support": "{:.4f}", "Confidence": "{:.4f}", "Lift": "{:.4f}"}
+                    ),
+                    use_container_width=True,
+                    hide_index=True,
+                )
+        else:
+            st.info("Select at least one product to generate recommendations.")
 
-            st.subheader("Ready-Made Examples")
-            example_rows = []
-            for basket in [["frankfurter"], ["other vegetables"], ["yogurt"], ["sausage"], ["soda"]]:
-                result = recommend_from_rules(basket, rules, 3)
-                if not result.empty:
-                    example_rows.append(
-                        {
-                            "Input basket": ", ".join(basket),
-                            "Top recommendation": result.iloc[0]["Recommended product"],
-                            "Lift": result.iloc[0]["Lift"],
-                            "Confidence": result.iloc[0]["Confidence"],
-                        }
-                    )
-            st.dataframe(
-                pd.DataFrame(example_rows).style.format({"Lift": "{:.4f}", "Confidence": "{:.4f}"}),
-                use_container_width=True,
-                hide_index=True,
-            )
-
-        section_card("Product Recommendation Engine", recommender_content)
+        st.markdown("---")
+        st.subheader("Ready-Made Examples")
+        example_rows = []
+        for basket in [["frankfurter"], ["other vegetables"], ["yogurt"], ["sausage"], ["soda"]]:
+            result = recommend_from_rules(basket, rules, 3)
+            if not result.empty:
+                example_rows.append(
+                    {
+                        "Input basket": ", ".join(basket),
+                        "Top recommendation": result.iloc[0]["Recommended product"],
+                        "Lift": result.iloc[0]["Lift"],
+                        "Confidence": result.iloc[0]["Confidence"],
+                    }
+                )
+        st.dataframe(
+            pd.DataFrame(example_rows).style.format({"Lift": "{:.4f}", "Confidence": "{:.4f}"}),
+            use_container_width=True,
+            hide_index=True,
+        )
 
     with tab_segments:
-        def segments_content():
-            segments = basket_segments(transaction_items)
-            st.dataframe(
-                segments.style.format({"average_size": "{:.2f}", "share": "{:.2%}"}),
-                use_container_width=True,
-                hide_index=True,
-            )
-            st.bar_chart(segments.set_index("segment")["transactions"], use_container_width=True)
+        st.subheader("Basket Size Segmentation")
+        segments = basket_segments(transaction_items)
+        st.dataframe(
+            segments.style.format({"average_size": "{:.2f}", "share": "{:.2%}"}),
+            use_container_width=True,
+            hide_index=True,
+        )
+        st.bar_chart(segments.set_index("segment")["transactions"], use_container_width=True)
 
-            tip_box(
-                "<strong>Insight:</strong> Most baskets are small (1-3 items), which explains why association "
-                "rules have low confidence. Low confidence is a data characteristic here, not a failed model."
-            )
-
-        section_card("Basket Size Segmentation", segments_content)
+        tip_box(
+            "<strong>Insight:</strong> Most baskets are small (1-3 items), which explains why association "
+            "rules have low confidence. Low confidence is a data characteristic here, not a failed model."
+        )
 
     with tab_deploy:
-        def deploy_content():
-            st.markdown(
-                """
-                1. Push all project files to GitHub (`app.py`, `requirements.txt`, `.streamlit/config.toml`, and the CSV files).
-                2. Go to [Streamlit Community Cloud](https://streamlit.io/cloud) and sign in with GitHub.
-                3. Click **New app** and select this repository.
-                4. Set the main file path to `app.py`.
-                5. Click **Deploy**.
-                """
-            )
-
-        section_card("Deployment Checklist", deploy_content)
+        st.subheader("Deployment Checklist")
+        st.markdown(
+            """
+            1. Push all project files to GitHub (`app.py`, `requirements.txt`, `.streamlit/config.toml`, and the CSV files).
+            2. Go to [Streamlit Community Cloud](https://streamlit.io/cloud) and sign in with GitHub.
+            3. Click **New app** and select this repository.
+            4. Set the main file path to `app.py`.
+            5. Click **Deploy**.
+            """
+        )
 
 
 # =============================================================================
@@ -709,94 +632,88 @@ elif dashboard_mode == "Power BI Preview":
     # Charts row 1
     col_a, col_b = st.columns(2)
     with col_a:
-        def top15_content():
-            top_15 = raw_data["itemDescription"].value_counts().head(15)
-            st.bar_chart(top_15, use_container_width=True)
-        section_card("Top 15 Products", top15_content)
+        st.subheader("Top 15 Products")
+        top_15 = raw_data["itemDescription"].value_counts().head(15)
+        st.bar_chart(top_15, use_container_width=True)
     with col_b:
-        def monthly_tx_content():
-            monthly_tx = raw_data.groupby("month")["transaction_id"].nunique()
-            st.line_chart(monthly_tx, use_container_width=True)
-        section_card("Monthly Transaction Volume", monthly_tx_content)
+        st.subheader("Monthly Transaction Volume")
+        monthly_tx = raw_data.groupby("month")["transaction_id"].nunique()
+        st.line_chart(monthly_tx, use_container_width=True)
 
     # Charts row 2
     col_c, col_d = st.columns(2)
     with col_c:
-        def scatter_content():
-            if not rules.empty:
-                scatter_data = rules[["Confidence", "Lift", "Support", "Rule"]].copy()
-                scatter_data["Size"] = scatter_data["Support"] * 5000
-                st.scatter_chart(
-                    scatter_data,
-                    x="Confidence",
-                    y="Lift",
-                    size="Size",
-                    color="Support",
-                    use_container_width=True,
-                )
-        section_card("Rules: Confidence vs Lift", scatter_content)
+        st.subheader("Rules: Confidence vs Lift")
+        if not rules.empty:
+            scatter_data = rules[["Confidence", "Lift", "Support", "Rule"]].copy()
+            scatter_data["Size"] = scatter_data["Support"] * 5000
+            st.scatter_chart(
+                scatter_data,
+                x="Confidence",
+                y="Lift",
+                size="Size",
+                color="Support",
+                use_container_width=True,
+            )
     with col_d:
-        def seg_content():
-            seg = basket_segments(transaction_items)
-            st.bar_chart(seg.set_index("segment")["transactions"], use_container_width=True)
-        section_card("Basket Segments", seg_content)
+        st.subheader("Basket Segments")
+        seg = basket_segments(transaction_items)
+        st.bar_chart(seg.set_index("segment")["transactions"], use_container_width=True)
 
     # Rules table
-    def rules_table_content():
-        top_rules = rules.head(20)[["Rank", "Rule", "Support", "Confidence", "Lift"]]
-        st.dataframe(
-            top_rules.style.format({"Support": "{:.4f}", "Confidence": "{:.4f}", "Lift": "{:.4f}"}),
-            use_container_width=True,
-            hide_index=True,
-            height=300,
-        )
-    section_card("Top Association Rules", rules_table_content)
+    st.subheader("Top Association Rules")
+    top_rules = rules.head(20)[["Rank", "Rule", "Support", "Confidence", "Lift"]]
+    st.dataframe(
+        top_rules.style.format({"Support": "{:.4f}", "Confidence": "{:.4f}", "Lift": "{:.4f}"}),
+        use_container_width=True,
+        hide_index=True,
+        height=300,
+    )
 
-    st.divider()
+    st.markdown("<hr class='section-divider'>", unsafe_allow_html=True)
 
     # Export section
-    def export_content():
-        st.write("Download these files and import them into Power BI Desktop using **Get Data > Text/CSV**.")
-        c1, c2, c3 = st.columns(3)
-        with c1:
-            st.download_button(
-                label="Download Raw transactions (CSV)",
-                data=raw_data.to_csv(index=False).encode("utf-8"),
-                file_name="groceries_cleaned.csv",
-                mime="text/csv",
-                use_container_width=True,
-            )
-        with c2:
-            st.download_button(
-                label="Download Association rules (CSV)",
-                data=rules.to_csv(index=False).encode("utf-8"),
-                file_name="association_rules.csv",
-                mime="text/csv",
-                use_container_width=True,
-            )
-        with c3:
-            matrix_df = pd.read_csv(MATRIX_PATH)
-            st.download_button(
-                label="Download Transaction matrix (CSV)",
-                data=matrix_df.to_csv(index=False).encode("utf-8"),
-                file_name="transaction_matrix.csv",
-                mime="text/csv",
-                use_container_width=True,
-            )
+    st.subheader("Export Data for Power BI Desktop")
+    st.write("Download these files and import them into Power BI Desktop using **Get Data > Text/CSV**.")
+    c1, c2, c3 = st.columns(3)
+    with c1:
         st.download_button(
-            label="Download All rules + metrics (Excel)",
-            data=to_excel(rules, "AssociationRules"),
-            file_name="association_rules.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            label="Download Raw transactions (CSV)",
+            data=raw_data.to_csv(index=False).encode("utf-8"),
+            file_name="groceries_cleaned.csv",
+            mime="text/csv",
+            use_container_width=True,
         )
-    section_card("Export Data for Power BI Desktop", export_content)
+    with c2:
+        st.download_button(
+            label="Download Association rules (CSV)",
+            data=rules.to_csv(index=False).encode("utf-8"),
+            file_name="association_rules.csv",
+            mime="text/csv",
+            use_container_width=True,
+        )
+    with c3:
+        matrix_df = pd.read_csv(MATRIX_PATH)
+        st.download_button(
+            label="Download Transaction matrix (CSV)",
+            data=matrix_df.to_csv(index=False).encode("utf-8"),
+            file_name="transaction_matrix.csv",
+            mime="text/csv",
+            use_container_width=True,
+        )
+    st.download_button(
+        label="Download All rules + metrics (Excel)",
+        data=to_excel(rules, "AssociationRules"),
+        file_name="association_rules.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    )
 
-    st.divider()
+    st.markdown("<hr class='section-divider'>", unsafe_allow_html=True)
 
     # DAX measures
-    def dax_content():
-        st.write("Copy these formulas into Power BI Desktop under **Modeling > New Measure**.")
-        dax_measures = """
+    st.subheader("DAX Measures for Power BI")
+    st.write("Copy these formulas into Power BI Desktop under **Modeling > New Measure**.")
+    dax_measures = """
 Total Transactions = DISTINCTCOUNT('groceries_cleaned'[transaction_id])
 
 Total Purchase Records = COUNTROWS('groceries_cleaned')
@@ -815,50 +732,50 @@ Max Confidence = MAX('association_rules'[Confidence])
 
 Rule Count = COUNTROWS('association_rules')
 """
-        st.code(dax_measures, language="dax")
-    section_card("DAX Measures for Power BI", dax_content)
+    st.code(dax_measures, language="dax")
 
-    st.divider()
+    st.markdown("<hr class='section-divider'>", unsafe_allow_html=True)
 
     # Embed section
-    def embed_content():
-        tip_box(
-            "<strong>How to get your Embed URL:</strong><br>"
-            "1. Build your report in <strong>Power BI Desktop</strong>.<br>"
-            "2. Click <strong>Publish</strong> and sign in to your Power BI account.<br>"
-            "3. Go to <strong>Power BI Service</strong> (app.powerbi.com) and open your published report.<br>"
-            "4. Click <strong>File > Embed report > Website or portal</strong>.<br>"
-            "5. Copy the URL that looks like <code>https://app.powerbi.com/reportEmbed?reportId=...</code><br>"
-            "6. Paste it below."
-        )
+    st.subheader("Embed Live Power BI Report")
+    tip_box(
+        "<strong>How to get your Embed URL:</strong><br>"
+        "1. Build your report in <strong>Power BI Desktop</strong>.<br>"
+        "2. Click <strong>Publish</strong> and sign in to your Power BI account.<br>"
+        "3. Go to <strong>Power BI Service</strong> (app.powerbi.com) and open your published report.<br>"
+        "4. Click <strong>File > Embed report > Website or portal</strong>.<br>"
+        "5. Copy the URL that looks like <code>https://app.powerbi.com/reportEmbed?reportId=...</code><br>"
+        "6. Paste it below."
+    )
 
-        embed_url = st.text_input(
-            "Power BI Embed URL",
-            value="",
-            placeholder="https://app.powerbi.com/reportEmbed?reportId=...",
-        )
-        if embed_url:
-            st.components.v1.iframe(embed_url, height=600, scrolling=True)
-        else:
-            st.info("Paste a valid Power BI Service embed URL above to render your live report here.")
-    section_card("Embed Live Power BI Report", embed_content)
+    embed_url = st.text_input(
+        "Power BI Embed URL",
+        value="",
+        placeholder="https://app.powerbi.com/reportEmbed?reportId=...",
+    )
+    if embed_url:
+        st.components.v1.iframe(embed_url, height=600, scrolling=True)
+    else:
+        st.info("Paste a valid Power BI Service embed URL above to render your live report here.")
 
 
 # =============================================================================
-#  MODE 3 - Snowflake Cloud
+#  MODE 3 - Snowflake Setup Guide
 # =============================================================================
-elif dashboard_mode == "Snowflake Cloud":
+elif dashboard_mode == "Snowflake Setup Guide":
     st.markdown(
         '<div class="hero">'
         '<h1>Snowflake Data Cloud Setup</h1>'
-        '<p>Warehouse schema, connection code, and SQL scripts for cloud analytics</p>'
+        '<p>Cloud data warehouse setup guide and connection scripts</p>'
         '</div>',
         unsafe_allow_html=True,
     )
 
     tip_box(
-        "<strong>Why Snowflake?</strong> Snowflake gives you elastic compute, automatic scaling, and the "
-        "ability to run SQL analytics or connect Power BI / Tableau directly to your warehouse. "
+        "<strong>What is Snowflake?</strong> Snowflake is a cloud data warehouse (a database in the cloud). "
+        "It stores your data and runs SQL queries very fast. It is NOT a dashboard tool. "
+        "After you load your data into Snowflake, you can connect <strong>Power BI</strong> or "
+        "<strong>Tableau</strong> to Snowflake to build dashboards. "
         "You can sign up for a <a href='https://signup.snowflake.com/' target='_blank'>free 30-day trial</a> "
         "with $400 in credits."
     )
@@ -868,8 +785,8 @@ elif dashboard_mode == "Snowflake Cloud":
     )
 
     with tab_sql:
-        def sql_content():
-            sql_ddl = """
+        st.subheader("SQL DDL - Create Tables")
+        sql_ddl = """
 CREATE DATABASE IF NOT EXISTS market_basket_db;
 CREATE SCHEMA IF NOT EXISTS market_basket_db.analytics;
 USE SCHEMA market_basket_db.analytics;
@@ -899,12 +816,11 @@ CREATE OR REPLACE TABLE transaction_matrix (
     transaction_id VARCHAR(50)
 );
 """
-            st.code(sql_ddl, language="sql")
-        section_card("SQL DDL - Create Tables", sql_content)
+        st.code(sql_ddl, language="sql")
 
     with tab_python:
-        def py_content():
-            python_snippet = """
+        st.subheader("Python Connector Snippet")
+        python_snippet = """
 import snowflake.connector
 import pandas as pd
 
@@ -924,15 +840,14 @@ success, nchunks, nrows, _ = conn.write_pandas(
 )
 print(f"Loaded {nrows} rows into Snowflake.")
 """
-            st.code(python_snippet, language="python")
-            st.info(
-                "In production, never hard-code credentials. Use Streamlit secrets or environment variables."
-            )
-        section_card("Python Connector Snippet", py_content)
+        st.code(python_snippet, language="python")
+        st.info(
+            "In production, never hard-code credentials. Use Streamlit secrets or environment variables."
+        )
 
     with tab_copy:
-        def copy_content():
-            copy_sql = """
+        st.subheader("Bulk Load via Stage (CSV to Snowflake)")
+        copy_sql = """
 COPY INTO groceries_raw
 FROM @my_stage/groceries_cleaned.csv
 FILE_FORMAT = (TYPE = CSV, SKIP_HEADER = 1, FIELD_OPTIONALLY_ENCLOSED_BY = '"');
@@ -941,12 +856,11 @@ COPY INTO association_rules
 FROM @my_stage/association_rules.csv
 FILE_FORMAT = (TYPE = CSV, SKIP_HEADER = 1, FIELD_OPTIONALLY_ENCLOSED_BY = '"');
 """
-            st.code(copy_sql, language="sql")
-        section_card("Bulk Load via Stage (CSV to Snowflake)", copy_content)
+        st.code(copy_sql, language="sql")
 
     with tab_queries:
-        def queries_content():
-            analytics_sql = """
+        st.subheader("Sample Analytics Queries")
+        analytics_sql = """
 SELECT itemDescription, COUNT(*) AS purchases
 FROM groceries_raw
 GROUP BY itemDescription
@@ -980,13 +894,12 @@ FROM (
 GROUP BY segment
 ORDER BY transactions DESC;
 """
-            st.code(analytics_sql, language="sql")
-        section_card("Sample Analytics Queries", queries_content)
+        st.code(analytics_sql, language="sql")
 
     with tab_arch:
-        def arch_content():
-            st.text(
-                """
+        st.subheader("Architecture Overview")
+        st.text(
+            """
     +-----------------+        +------------------+        +------------------+
     |  CSV Data       |  PUT   |  Snowflake       |  SQL   |  Power BI /      |
     |  (Groceries)    | -----> |  Stage > Tables  | -----> |  Tableau /       |
@@ -998,11 +911,10 @@ ORDER BY transactions DESC;
     - Concurrent read/write without locking
     - Direct Power BI connector (Import or DirectQuery)
     - Scales to billions of rows automatically
-                """
-            )
-        section_card("Architecture Overview", arch_content)
+            """
+        )
 
-    st.divider()
+    st.markdown("<hr class='section-divider'>", unsafe_allow_html=True)
     success_box(
         "Once your data is in Snowflake, return to <strong>Power BI Preview</strong> mode to download CSVs "
         "or connect Power BI directly using the Snowflake connector."
