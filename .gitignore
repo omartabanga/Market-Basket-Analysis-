@@ -1,0 +1,28 @@
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data outputs (optional, keep if you want them in repo)
+# Uncomment below if you do NOT want CSVs in Git
+# *.csv
+
+# Secrets
+secrets.toml
+.env
