@@ -14,8 +14,81 @@ MATRIX_PATH = BASE_DIR / "transaction_matrix.csv"
 
 st.set_page_config(
     page_title="Market Basket Analysis Dashboard",
-    page_icon="basket",
+    page_icon="🧺",
     layout="wide",
+    initial_sidebar_state="expanded",
+)
+
+
+# ---------------------------------------------------------------------------
+#  Custom CSS for a professional SaaS look
+# ---------------------------------------------------------------------------
+st.markdown(
+    """
+    <style>
+    /* Metric cards */
+    .metric-card {
+        background-color: #ffffff;
+        border: 1px solid #e6e6e6;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        text-align: center;
+    }
+    .metric-value {
+        font-size: 32px;
+        font-weight: 700;
+        color: #176d60;
+        margin-bottom: 4px;
+    }
+    .metric-label {
+        font-size: 13px;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Section headers */
+    .section-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #182021;
+        margin-top: 24px;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #176d60;
+        display: inline-block;
+    }
+
+    /* Info / help boxes */
+    .help-box {
+        background-color: #f0f7f6;
+        border-left: 4px solid #176d60;
+        padding: 16px;
+        border-radius: 0 8px 8px 0;
+        margin: 16px 0;
+    }
+
+    /* Chart container */
+    .chart-box {
+        background-color: #ffffff;
+        border: 1px solid #e6e6e6;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+    }
+
+    /* Streamlit tabs override for cleaner look */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+    }
+    .stTabs [data-baseweb="tab"] {
+        padding: 10px 20px;
+        border-radius: 8px 8px 0 0;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
 )
 
 
@@ -59,8 +132,16 @@ def build_transaction_items(data: pd.DataFrame) -> pd.Series:
 # ---------------------------------------------------------------------------
 #  Helpers
 # ---------------------------------------------------------------------------
-def format_percent(value: float) -> str:
-    return f"{value * 100:.2f}%"
+def metric_card(label: str, value: str) -> None:
+    st.markdown(
+        f"""
+        <div class="metric-card">
+            <div class="metric-value">{value}</div>
+            <div class="metric-label">{label}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 def basket_segments(transaction_items: pd.Series) -> pd.DataFrame:
@@ -145,10 +226,6 @@ def fallback_cooccurrence(selected_items: list[str], transaction_items: pd.Serie
     return pd.DataFrame(rows).sort_values(["Co-occurrence count", "Dataset support"], ascending=False).head(top_n)
 
 
-def metric_card(label: str, value: str, help_text: str | None = None) -> None:
-    st.metric(label=label, value=value, help=help_text)
-
-
 def to_excel(df: pd.DataFrame, sheet_name: str = "Sheet1") -> bytes:
     buffer = BytesIO()
     df.to_excel(buffer, index=False, sheet_name=sheet_name)
@@ -156,24 +233,34 @@ def to_excel(df: pd.DataFrame, sheet_name: str = "Sheet1") -> bytes:
 
 
 # ---------------------------------------------------------------------------
-#  Sidebar – Dashboard selector (SaaS feel)
+#  Sidebar – Platform Selector
 # ---------------------------------------------------------------------------
-st.sidebar.title("Dashboard Selector")
-dashboard_mode = st.sidebar.radio(
-    "Choose your analytics platform:",
-    options=[
-        "Market Basket Engine (Streamlit)",
-        "Power BI Dashboard",
-        "Snowflake Data Cloud",
-    ],
-    index=0,
-)
+with st.sidebar:
+    st.markdown("## 🧭 Platform Selector")
+    st.markdown("Choose the analytics experience you want.")
+    dashboard_mode = st.radio(
+        label="",
+        options=[
+            "🚀 Market Basket Engine",
+            "📊 Power BI Preview",
+            "❄️ Snowflake Cloud",
+        ],
+        index=0,
+        label_visibility="collapsed",
+    )
 
-st.sidebar.markdown("---")
-st.sidebar.info(
-    "Switch between the built-in Streamlit engine, a Power BI export workspace, "
-    "or a Snowflake warehouse setup guide."
-)
+    st.markdown("---")
+    st.markdown(
+        """
+        <div style="font-size:12px; color:#666;">
+        <b>How it works:</b><br>
+        • <b>Market Basket Engine</b> — Interactive rules & recommendations.<br>
+        • <b>Power BI Preview</b> — Live dashboard preview + export tools.<br>
+        • <b>Snowflake Cloud</b> — Cloud warehouse setup guide.
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -188,45 +275,50 @@ transaction_items = build_transaction_items(raw_data)
 # =============================================================================
 #  MODE 1 – Market Basket Engine (Streamlit)
 # =============================================================================
-if dashboard_mode == "Market Basket Engine (Streamlit)":
-    st.title("Market Basket Analysis Dashboard")
-    st.caption("Groceries transaction analysis, association rules, and product recommendations.")
+if dashboard_mode == "🚀 Market Basket Engine":
+    st.markdown("<h1 style='margin-bottom:4px;'>Market Basket Analysis</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='color:#666; margin-bottom:24px;'>Groceries transaction analysis, association rules, and product recommendations.</p>", unsafe_allow_html=True)
 
     tab_overview, tab_rules, tab_recommender, tab_segments, tab_deploy = st.tabs(
-        ["Overview", "Rules", "Recommendation Engine", "Basket Segments", "Deployment"]
+        ["📈 Overview", "🔗 Rules", "🎯 Recommendations", "🧺 Segments", "🚀 Deploy"]
     )
 
     with tab_overview:
-        left, middle, right, far_right = st.columns(4)
-        with left:
-            metric_card("Purchase records", f"{len(raw_data):,}")
-        with middle:
-            metric_card("Transactions", f"{raw_data['transaction_id'].nunique():,}")
-        with right:
-            metric_card("Unique products", f"{raw_data['itemDescription'].nunique():,}")
-        with far_right:
-            metric_card("Exported rules", f"{len(rules):,}")
+        # Metric cards row
+        c1, c2, c3, c4 = st.columns(4)
+        with c1:
+            metric_card("Purchase Records", f"{len(raw_data):,}")
+        with c2:
+            metric_card("Unique Transactions", f"{raw_data['transaction_id'].nunique():,}")
+        with c3:
+            metric_card("Unique Products", f"{raw_data['itemDescription'].nunique():,}")
+        with c4:
+            metric_card("Association Rules", f"{len(rules):,}")
 
-        st.divider()
-        st.subheader("Top products")
-        top_n = st.slider("Number of products", min_value=5, max_value=30, value=15, key="top_products")
+        st.markdown("<div class='section-title'>Top Products</div>", unsafe_allow_html=True)
+        top_n = st.slider("Number of products to show", min_value=5, max_value=30, value=15, key="top_products")
         top_items = raw_data["itemDescription"].value_counts().head(top_n)
-        st.bar_chart(top_items)
+        st.bar_chart(top_items, use_container_width=True)
 
         col_a, col_b = st.columns(2)
         with col_a:
-            st.subheader("Monthly purchase volume")
+            st.markdown("<div class='section-title'>Monthly Volume</div>", unsafe_allow_html=True)
             monthly = raw_data.groupby("month").size()
-            st.line_chart(monthly)
+            st.line_chart(monthly, use_container_width=True)
         with col_b:
-            st.subheader("Transaction size distribution")
+            st.markdown("<div class='section-title'>Transaction Size Distribution</div>", unsafe_allow_html=True)
             size_counts = transaction_items.apply(len).value_counts().sort_index()
-            st.bar_chart(size_counts)
+            st.bar_chart(size_counts, use_container_width=True)
 
     with tab_rules:
-        st.subheader("Association rules")
-        min_lift = st.slider("Minimum lift", 1.0, float(max(1.0, rules["Lift"].max())), 1.0, 0.01)
-        min_confidence = st.slider("Minimum confidence", 0.0, float(max(0.01, rules["Confidence"].max())), 0.0, 0.01)
+        st.markdown("<div class='section-title'>Association Rules Explorer</div>", unsafe_allow_html=True)
+
+        c1, c2 = st.columns(2)
+        with c1:
+            min_lift = st.slider("Minimum Lift", 1.0, float(max(1.0, rules["Lift"].max())), 1.0, 0.01)
+        with c2:
+            min_confidence = st.slider("Minimum Confidence", 0.0, float(max(0.01, rules["Confidence"].max())), 0.0, 0.01)
+
         filtered_rules = rules[(rules["Lift"] >= min_lift) & (rules["Confidence"] >= min_confidence)].copy()
 
         st.dataframe(
@@ -244,15 +336,16 @@ if dashboard_mode == "Market Basket Engine (Streamlit)":
             ),
             use_container_width=True,
             hide_index=True,
+            height=400,
         )
 
         col_a, col_b = st.columns(2)
         with col_a:
-            st.subheader("Rules ranked by lift")
+            st.markdown("<div class='section-title'>Rules by Lift</div>", unsafe_allow_html=True)
             lift_chart = filtered_rules.set_index("Rule")["Lift"] if not filtered_rules.empty else pd.Series(dtype=float)
-            st.bar_chart(lift_chart)
+            st.bar_chart(lift_chart, use_container_width=True)
         with col_b:
-            st.subheader("Metric summary")
+            st.markdown("<div class='section-title'>Metric Summary</div>", unsafe_allow_html=True)
             if filtered_rules.empty:
                 st.info("No rules match the selected filters.")
             else:
@@ -263,20 +356,30 @@ if dashboard_mode == "Market Basket Engine (Streamlit)":
                     use_container_width=True,
                 )
 
-        st.subheader("Interpretation")
-        st.write(
-            "Lift above 1 means the antecedent and consequent appear together more often than expected "
-            "under independence. The current dataset has small, sparse baskets, so confidence values are low."
+        st.markdown(
+            """
+            <div class="help-box">
+            <b>How to read these rules:</b> Lift above 1 means the antecedent and consequent appear together 
+            more often than expected under independence. The current dataset has small, sparse baskets, 
+            so confidence values are generally low.
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
 
     with tab_recommender:
-        st.subheader("Product recommendation engine")
-        selected_items = st.multiselect(
-            "Basket products",
-            options=sorted(matrix_items),
-            default=["sausage"] if "sausage" in matrix_items else [],
-        )
-        top_n_recs = st.slider("Maximum recommendations", min_value=1, max_value=10, value=5)
+        st.markdown("<div class='section-title'>Product Recommendation Engine</div>", unsafe_allow_html=True)
+
+        c1, c2 = st.columns([3, 1])
+        with c1:
+            selected_items = st.multiselect(
+                "Select products currently in the basket",
+                options=sorted(matrix_items),
+                default=["sausage"] if "sausage" in matrix_items else [],
+                placeholder="Choose products...",
+            )
+        with c2:
+            top_n_recs = st.slider("Max recommendations", min_value=1, max_value=10, value=5)
 
         if selected_items:
             recommendations = recommend_from_rules(selected_items, rules, top_n_recs)
@@ -297,6 +400,7 @@ if dashboard_mode == "Market Basket Engine (Streamlit)":
                         hide_index=True,
                     )
             else:
+                st.success(f"Found {len(recommendations)} recommendation(s) based on your basket.")
                 st.dataframe(
                     recommendations.style.format(
                         {
@@ -311,7 +415,7 @@ if dashboard_mode == "Market Basket Engine (Streamlit)":
         else:
             st.info("Select at least one product to generate recommendations.")
 
-        st.subheader("Ready examples")
+        st.markdown("<div class='section-title'>Ready-Made Examples</div>", unsafe_allow_html=True)
         example_rows = []
         for basket in [["frankfurter"], ["other vegetables"], ["yogurt"], ["sausage"], ["soda"]]:
             result = recommend_from_rules(basket, rules, 3)
@@ -331,88 +435,165 @@ if dashboard_mode == "Market Basket Engine (Streamlit)":
         )
 
     with tab_segments:
-        st.subheader("Basket size segmentation")
+        st.markdown("<div class='section-title'>Basket Size Segmentation</div>", unsafe_allow_html=True)
         segments = basket_segments(transaction_items)
         st.dataframe(
             segments.style.format({"average_size": "{:.2f}", "share": "{:.2%}"}),
             use_container_width=True,
             hide_index=True,
         )
-        st.bar_chart(segments.set_index("segment")["transactions"])
+        st.bar_chart(segments.set_index("segment")["transactions"], use_container_width=True)
 
-        st.subheader("Segment interpretation")
-        st.write(
-            "Most baskets are small, which explains why association rules have low confidence. "
-            "Low confidence is a data characteristic here, not automatically a failed model."
+        st.markdown(
+            """
+            <div class="help-box">
+            <b>Insight:</b> Most baskets are small (1-3 items), which explains why association rules have 
+            low confidence. Low confidence is a data characteristic here, not automatically a failed model.
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
 
     with tab_deploy:
-        st.subheader("Deployment checklist")
+        st.markdown("<div class='section-title'>Deployment Checklist</div>", unsafe_allow_html=True)
         st.markdown(
             """
-1. Push `app.py`, `requirements.txt`, `.streamlit/config.toml`, `association_rules.csv`, `transaction_matrix.csv`, and `Groceries_dataset.csv`.
-2. Open Streamlit Community Cloud.
-3. Select the GitHub repository.
-4. Set the main file path to `app.py`.
-5. Deploy.
-"""
-        )
-
-        st.subheader("Project ownership note")
-        st.write(
-            "This dashboard covers the engine and deployment milestone by turning the mined rules into "
-            "an interactive product recommendation interface with rule exploration and basket segmentation."
+            1. Push all project files to GitHub (`app.py`, `requirements.txt`, `.streamlit/config.toml`, and the CSV files).
+            2. Go to [Streamlit Community Cloud](https://streamlit.io/cloud) and sign in with GitHub.
+            3. Click **New app** and select this repository.
+            4. Set the main file path to `app.py`.
+            5. Click **Deploy**.
+            """
         )
 
 
 # =============================================================================
-#  MODE 2 – Power BI Dashboard
+#  MODE 2 – Power BI Preview
 # =============================================================================
-elif dashboard_mode == "Power BI Dashboard":
-    st.title("Power BI Dashboard Export & Guide")
-    st.caption("Export your data and DAX formulas to build a Power BI basket-analysis report.")
+elif dashboard_mode == "📊 Power BI Preview":
+    st.markdown("<h1 style='margin-bottom:4px;'>Power BI Dashboard Preview</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='color:#666; margin-bottom:24px;'>Live preview of your basket analytics + export tools for Power BI Desktop.</p>", unsafe_allow_html=True)
 
-    st.markdown(
-        """
-        **Reference playlist:**
-        [Basket Analysis Introduction – Best Practice Tips For Power BI Using DAX]
-        (https://www.youtube.com/watch?v=z9ttZAZkEhs&list=PLM9ZnQfU_UGWxn7D9VRkKcMtcYt1wTCBf)
-        """
+    # -----------------------------------------------------------------------
+    #  EXPLANATION BOX: What is this page?
+    # -----------------------------------------------------------------------
+    with st.expander("❓ What is this page and how do I use it?", expanded=True):
+        st.markdown(
+            """
+            This page does **two things**:
+
+            **1. Live Preview Dashboard** (below) — See your data visualized with interactive charts 
+            directly in the browser. This is a preview of what your Power BI report could look like.
+
+            **2. Export & Connect** (further below) — Download the cleaned data as CSV/Excel so you can 
+            import it into **Power BI Desktop** and build your own professional report.
+
+            **What is an Embedded Power BI Report?**
+            After you build a report in **Power BI Desktop**, you can **Publish** it to the cloud 
+            (**Power BI Service** at `app.powerbi.com`). Once published, Power BI gives you a special 
+            **Embed URL** that looks like:
+            ```
+            https://app.powerbi.com/reportEmbed?reportId=abc123...
+            ```
+            If you paste that URL in the box at the bottom of this page, your live Power BI report 
+            will appear directly inside this app.
+            """
+        )
+
+    # -----------------------------------------------------------------------
+    #  LIVE PREVIEW DASHBOARD (This is the actual dashboard part!)
+    # -----------------------------------------------------------------------
+    st.markdown("<div class='section-title'>Live Preview Dashboard</div>", unsafe_allow_html=True)
+
+    # KPI Cards
+    c1, c2, c3, c4 = st.columns(4)
+    with c1:
+        metric_card("Total Records", f"{len(raw_data):,}")
+    with c2:
+        metric_card("Transactions", f"{raw_data['transaction_id'].nunique():,}")
+    with c3:
+        metric_card("Products", f"{raw_data['itemDescription'].nunique():,}")
+    with c4:
+        metric_card("Avg Basket Size", f"{transaction_items.apply(len).mean():.1f}")
+
+    # Top products + Monthly trend
+    col_a, col_b = st.columns(2)
+    with col_a:
+        st.markdown("<div class='section-title'>Top 15 Products</div>", unsafe_allow_html=True)
+        top_15 = raw_data["itemDescription"].value_counts().head(15)
+        st.bar_chart(top_15, use_container_width=True)
+    with col_b:
+        st.markdown("<div class='section-title'>Monthly Transaction Volume</div>", unsafe_allow_html=True)
+        monthly_tx = raw_data.groupby("month")["transaction_id"].nunique()
+        st.line_chart(monthly_tx, use_container_width=True)
+
+    # Rules scatter plot + Basket segments
+    col_c, col_d = st.columns(2)
+    with col_c:
+        st.markdown("<div class='section-title'>Rules: Confidence vs Lift</div>", unsafe_allow_html=True)
+        if not rules.empty:
+            scatter_data = rules[["Confidence", "Lift", "Support", "Rule"]].copy()
+            scatter_data["Size"] = scatter_data["Support"] * 5000  # Scale for visibility
+            st.scatter_chart(
+                scatter_data,
+                x="Confidence",
+                y="Lift",
+                size="Size",
+                color="Support",
+                use_container_width=True,
+            )
+    with col_d:
+        st.markdown("<div class='section-title'>Basket Segments</div>", unsafe_allow_html=True)
+        seg = basket_segments(transaction_items)
+        st.bar_chart(seg.set_index("segment")["transactions"], use_container_width=True)
+
+    # Rules table preview
+    st.markdown("<div class='section-title'>Top Association Rules</div>", unsafe_allow_html=True)
+    top_rules = rules.head(20)[["Rank", "Rule", "Support", "Confidence", "Lift"]]
+    st.dataframe(
+        top_rules.style.format({"Support": "{:.4f}", "Confidence": "{:.4f}", "Lift": "{:.4f}"}),
+        use_container_width=True,
+        hide_index=True,
+        height=300,
     )
 
     st.divider()
 
     # -----------------------------------------------------------------------
-    #  Export data
+    #  EXPORT DATA SECTION
     # -----------------------------------------------------------------------
-    st.subheader("1. Export cleaned data")
-    st.write("Download the datasets below and import them into Power BI using **Get Data → Text/CSV**.")
+    st.markdown("<div class='section-title'>Export Data for Power BI Desktop</div>", unsafe_allow_html=True)
+    st.write("Download these files and import them into Power BI Desktop using **Get Data → Text/CSV**.")
 
     c1, c2, c3 = st.columns(3)
     with c1:
         st.download_button(
-            label="Raw transactions (CSV)",
+            label="📥 Raw transactions (CSV)",
             data=raw_data.to_csv(index=False).encode("utf-8"),
             file_name="groceries_cleaned.csv",
             mime="text/csv",
+            use_container_width=True,
         )
     with c2:
         st.download_button(
-            label="Association rules (CSV)",
+            label="📥 Association rules (CSV)",
             data=rules.to_csv(index=False).encode("utf-8"),
             file_name="association_rules.csv",
             mime="text/csv",
+            use_container_width=True,
         )
     with c3:
+        matrix_df = pd.read_csv(MATRIX_PATH)
         st.download_button(
-            label="Transaction matrix (CSV)",
-            data=pd.read_csv(MATRIX_PATH).to_csv(index=False).encode("utf-8"),
+            label="📥 Transaction matrix (CSV)",
+            data=matrix_df.to_csv(index=False).encode("utf-8"),
             file_name="transaction_matrix.csv",
             mime="text/csv",
+            use_container_width=True,
         )
 
     st.download_button(
-        label="All rules + metrics (Excel)",
+        label="📥 All rules + metrics (Excel)",
         data=to_excel(rules, "AssociationRules"),
         file_name="association_rules.xlsx",
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -421,28 +602,10 @@ elif dashboard_mode == "Power BI Dashboard":
     st.divider()
 
     # -----------------------------------------------------------------------
-    #  Recommended Power BI visuals
+    #  DAX MEASURES
     # -----------------------------------------------------------------------
-    st.subheader("2. Recommended Power BI visuals")
-    st.markdown(
-        """
-| Visual | Fields | Insight |
-|---|---|---|
-| **Matrix / Table** | Antecedent → Consequent, Lift, Confidence, Support | Browse rules like the Streamlit table |
-| **Scatter plot** | Confidence (X), Lift (Y), Support (Size) | Identify strong rules at a glance |
-| **Bar chart** | Top items by purchase count | Same as *Top products* in Streamlit |
-| **Line chart** | Month → Count of transaction_id | Monthly volume trend |
-| **Funnel / Donut** | Basket-size segment → % of transactions | Segmentation view |
-| **Slicer** | Antecedent | Dynamic filter to show only rules triggered by a selected product |
-"""
-    )
-
-    st.divider()
-
-    # -----------------------------------------------------------------------
-    #  DAX measures
-    # -----------------------------------------------------------------------
-    st.subheader("3. DAX measures (copy-paste into Power BI)")
+    st.markdown("<div class='section-title'>DAX Measures for Power BI</div>", unsafe_allow_html=True)
+    st.write("Copy these formulas into Power BI Desktop under **Modeling → New Measure**.")
     dax_measures = """
 Total Transactions = DISTINCTCOUNT('groceries_cleaned'[transaction_id])
 
@@ -467,42 +630,62 @@ Rule Count = COUNTROWS('association_rules')
     st.divider()
 
     # -----------------------------------------------------------------------
-    #  Embed placeholder
+    #  EMBED LIVE REPORT
     # -----------------------------------------------------------------------
-    st.subheader("4. Embedded Power BI report (optional)")
-    st.write(
-        "If you publish your report to Power BI Service, paste the embed URL below to display it live."
+    st.markdown("<div class='section-title'>Embed Live Power BI Report</div>", unsafe_allow_html=True)
+
+    st.markdown(
+        """
+        <div class="help-box">
+        <b>How to get your Embed URL:</b><br>
+        1. Build your report in <b>Power BI Desktop</b>.<br>
+        2. Click <b>Publish</b> and sign in to your Power BI account.<br>
+        3. Go to <b>Power BI Service</b> (app.powerbi.com) and open your published report.<br>
+        4. Click <b>File → Embed report → Website or portal</b>.<br>
+        5. Copy the URL that looks like <code>https://app.powerbi.com/reportEmbed?reportId=...</code><br>
+        6. Paste it below.
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
-    embed_url = st.text_input("Power BI embed URL", value="", placeholder="https://app.powerbi.com/reportEmbed?reportId=...")
+
+    embed_url = st.text_input(
+        "Power BI Embed URL",
+        value="",
+        placeholder="https://app.powerbi.com/reportEmbed?reportId=...",
+    )
     if embed_url:
         st.components.v1.iframe(embed_url, height=600, scrolling=True)
     else:
-        st.info("Enter a valid Power BI Service embed URL above to render the report inline.")
+        st.info("Paste a valid Power BI Service embed URL above to render your live report here.")
 
 
 # =============================================================================
 #  MODE 3 – Snowflake Data Cloud
 # =============================================================================
-elif dashboard_mode == "Snowflake Data Cloud":
-    st.title("Snowflake Data Cloud Setup")
-    st.caption("Warehouse schema, connection snippets, and SQL scripts for cloud analytics.")
+elif dashboard_mode == "❄️ Snowflake Cloud":
+    st.markdown("<h1 style='margin-bottom:4px;'>Snowflake Data Cloud Setup</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='color:#666; margin-bottom:24px;'>Warehouse schema, connection code, and SQL scripts for cloud analytics.</p>", unsafe_allow_html=True)
 
     st.markdown(
         """
-        **Why Snowflake?**
-        Snowflake gives you elastic compute, automatic scaling, and the ability to run SQL analytics
-        or connect Power BI / Tableau directly to your warehouse. You can sign up for a
-        [free 30-day trial](https://signup.snowflake.com/) with $400 in credits.
-        """
+        <div class="help-box">
+        <b>Why Snowflake?</b> Snowflake gives you elastic compute, automatic scaling, and the ability 
+        to run SQL analytics or connect Power BI / Tableau directly to your warehouse. 
+        You can sign up for a <a href="https://signup.snowflake.com/" target="_blank">free 30-day trial</a> 
+        with $400 in credits.
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
-    st.divider()
+    tab_sql, tab_python, tab_copy, tab_queries, tab_arch = st.tabs(
+        ["🗄️ SQL Schema", "🐍 Python Loader", "📤 Bulk Load", "📊 Analytics Queries", "🏗️ Architecture"]
+    )
 
-    # -----------------------------------------------------------------------
-    #  SQL DDL
-    # -----------------------------------------------------------------------
-    st.subheader("1. SQL DDL – create tables")
-    sql_ddl = """
+    with tab_sql:
+        st.markdown("<div class='section-title'>SQL DDL — Create Tables</div>", unsafe_allow_html=True)
+        sql_ddl = """
 -- Create database and schema
 CREATE DATABASE IF NOT EXISTS market_basket_db;
 CREATE SCHEMA IF NOT EXISTS market_basket_db.analytics;
@@ -537,15 +720,11 @@ CREATE OR REPLACE TABLE transaction_matrix (
     -- product columns will be added dynamically or stored as a VARIANT
 );
 """
-    st.code(sql_ddl, language="sql")
+        st.code(sql_ddl, language="sql")
 
-    st.divider()
-
-    # -----------------------------------------------------------------------
-    #  Python connector snippet
-    # -----------------------------------------------------------------------
-    st.subheader("2. Python connector snippet")
-    python_snippet = """
+    with tab_python:
+        st.markdown("<div class='section-title'>Python Connector Snippet</div>", unsafe_allow_html=True)
+        python_snippet = """
 import snowflake.connector
 import pandas as pd
 
@@ -569,20 +748,15 @@ success, nchunks, nrows, _ = conn.write_pandas(
 )
 print(f"Loaded {nrows} rows into Snowflake.")
 """
-    st.code(python_snippet, language="python")
+        st.code(python_snippet, language="python")
+        st.info(
+            "In production, never hard-code credentials. Use Streamlit secrets (`secrets.toml`) or "
+            "environment variables and load them via `st.secrets['snowflake']`."
+        )
 
-    st.info(
-        "In production, never hard-code credentials. Use Streamlit secrets (`secrets.toml`) or "
-        "environment variables and load them via `st.secrets['snowflake']`."
-    )
-
-    st.divider()
-
-    # -----------------------------------------------------------------------
-    #  Copy-into SQL
-    # -----------------------------------------------------------------------
-    st.subheader("3. Bulk load via Stage (CSV → Snowflake)")
-    copy_sql = """
+    with tab_copy:
+        st.markdown("<div class='section-title'>Bulk Load via Stage (CSV → Snowflake)</div>", unsafe_allow_html=True)
+        copy_sql = """
 -- Upload CSV files to a Snowflake Stage first (e.g. via Snowsight UI or PUT command)
 
 COPY INTO groceries_raw
@@ -593,15 +767,11 @@ COPY INTO association_rules
 FROM @my_stage/association_rules.csv
 FILE_FORMAT = (TYPE = CSV, SKIP_HEADER = 1, FIELD_OPTIONALLY_ENCLOSED_BY = '"');
 """
-    st.code(copy_sql, language="sql")
+        st.code(copy_sql, language="sql")
 
-    st.divider()
-
-    # -----------------------------------------------------------------------
-    #  Sample analytics queries
-    # -----------------------------------------------------------------------
-    st.subheader("4. Sample analytics queries")
-    analytics_sql = """
+    with tab_queries:
+        st.markdown("<div class='section-title'>Sample Analytics Queries</div>", unsafe_allow_html=True)
+        analytics_sql = """
 -- Top products
 SELECT itemDescription, COUNT(*) AS purchases
 FROM groceries_raw
@@ -639,16 +809,12 @@ FROM (
 GROUP BY segment
 ORDER BY transactions DESC;
 """
-    st.code(analytics_sql, language="sql")
+        st.code(analytics_sql, language="sql")
 
-    st.divider()
-
-    # -----------------------------------------------------------------------
-    #  Architecture diagram (ASCII)
-    # -----------------------------------------------------------------------
-    st.subheader("5. Architecture overview")
-    st.text(
-        """
+    with tab_arch:
+        st.markdown("<div class='section-title'>Architecture Overview</div>", unsafe_allow_html=True)
+        st.text(
+            """
     +-----------------+        +------------------+        +------------------+
     |  CSV Data       |  PUT   |  Snowflake       |  SQL   |  Power BI /      |
     |  (Groceries)    | -----> |  Stage → Tables  | -----> |  Tableau /       |
@@ -660,11 +826,11 @@ ORDER BY transactions DESC;
     - Concurrent read/write without locking
     - Direct Power BI connector (Import or DirectQuery)
     - Scales to billions of rows automatically
-        """
-    )
+            """
+        )
 
     st.divider()
     st.success(
-        "Once your data is in Snowflake, return to **Power BI Dashboard** mode to download CSVs "
+        "Once your data is in Snowflake, return to **Power BI Preview** mode to download CSVs "
         "or connect Power BI directly using the Snowflake connector."
     )
