@@ -33,20 +33,14 @@ st.markdown(
 
     /* Sidebar */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #0b1220 0%, #152033 100%);
-        border-right: 1px solid #1e293b;
-    }
-    [data-testid="stSidebar"] .stRadio label {
-        color: #cbd5e1;
-        font-size: 13px;
-        font-weight: 500;
-        padding: 6px 0;
+        background: #ffffff;
+        border-right: 1px solid #e2e8f0;
     }
     [data-testid="stSidebar"] .stRadio > div {
-        background: rgba(255,255,255,0.03);
+        background: #f8fafc;
         border-radius: 10px;
         padding: 8px;
-        border: 1px solid rgba(255,255,255,0.06);
+        border: 1px solid #e2e8f0;
     }
 
     /* Main layout */
@@ -365,8 +359,8 @@ def to_excel(df: pd.DataFrame, sheet_name: str = "Sheet1") -> bytes:
 #  Sidebar
 # ---------------------------------------------------------------------------
 with st.sidebar:
-    st.markdown('<p style="color:#f8fafc; font-size:18px; font-weight:700; margin-bottom:4px;">Platform Selector</p>', unsafe_allow_html=True)
-    st.markdown('<p style="color:#94a3b8; font-size:12px; line-height:1.5; margin-bottom:20px;">Choose the analytics experience you want to explore.</p>', unsafe_allow_html=True)
+    st.markdown('<p style="color:#0f172a; font-size:18px; font-weight:700; margin-bottom:4px;">Platform Selector</p>', unsafe_allow_html=True)
+    st.markdown('<p style="color:#64748b; font-size:12px; line-height:1.5; margin-bottom:20px;">Choose the analytics experience you want to explore.</p>', unsafe_allow_html=True)
 
     dashboard_mode = st.radio(
         label="",
@@ -381,10 +375,10 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown(
-        '<p style="color:#94a3b8; font-size:12px; line-height:1.6;">'
-        '<strong style="color:#e2e8f0;">Market Basket Engine</strong> &mdash; Interactive rules and recommendations.<br><br>'
-        '<strong style="color:#e2e8f0;">Power BI Preview</strong> &mdash; Live charts and export tools.<br><br>'
-        '<strong style="color:#e2e8f0;">Snowflake Setup</strong> &mdash; Cloud database connection guide.'
+        '<p style="color:#64748b; font-size:12px; line-height:1.6;">'
+        '<strong style="color:#0f172a;">Market Basket Engine</strong> &mdash; Interactive rules and recommendations.<br><br>'
+        '<strong style="color:#0f172a;">Power BI Preview</strong> &mdash; Live charts and export tools.<br><br>'
+        '<strong style="color:#0f172a;">Snowflake Setup</strong> &mdash; Cloud database connection guide.'
         '</p>',
         unsafe_allow_html=True,
     )
